@@ -1,0 +1,17 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      nodejs: 20
+    commands:
+      - npm install
+  pre_build:
+    commands:
+      - npm run test
+      - sam build
+  build:
+    commands:
+      - sam package --s3-bucket $S3_BUCKET --output-template-file packaged.yaml
+artifacts:
+  files:
+    - packaged.yaml
