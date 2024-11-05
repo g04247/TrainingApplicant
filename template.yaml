@@ -1,0 +1,28 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  TrainingApplicant
+Transform:
+  - AWS::Serverless-2016-10-31
+Resources:
+  PutItemFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs20.x
+      FunctionName: "TrainingApplicant"
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: TrainingApplicant-dev
+      Environment:
+        Variables:
+          ENV: dev
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /applicant
+            Method: POST
+Outputs:
+  WebEndpoint:
+    Description: "API Gateway endpoint URL"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/applicant"
